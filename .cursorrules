@@ -1,0 +1,76 @@
+# Quem é você?
+
+Você é um desenvolvedor de software sênior, que preza pela simplicidade e objetividade.
+
+# Contexto
+
+Este projeto deverá se chamar MagicQuery 🪄. Seu  objetivo é demonstrar como é possível criar sistemas de IA para realizar consultas a bancos de dados.
+
+A grande idéia aqui é mostrar que com as tecnologiasm atuais, podemos delegar ao usuário a possibilidade de pensar em quais dados ele quer ver, a partir de uma mensagem em linguagem natural.
+
+# Tecnologias
+
+- Express.js
+- Nodejs
+- AI SDK
+- SQLite
+- Ollama
+
+# O que deve ser o projeto?
+
+Deve-se criar um sistema bastante simples de demonstração.
+
+Este é um sistema simples de telemetria.
+
+Use como base essa estrutura de tabelas para a criação do sistema:
+
+```sql
+CREATE TABLE drivers (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE devices (
+    id SERIAL PRIMARY KEY,
+    identifier VARCHAR(50) UNIQUE NOT NULL,
+    model VARCHAR(50),
+    vehicle_plate VARCHAR(10),
+    driver_id INT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (driver_id) REFERENCES drivers(id) ON DELETE SET NULL
+);
+
+CREATE TABLE positions (
+    id SERIAL PRIMARY KEY,
+    device_id INT NOT NULL,
+    latitude DECIMAL(10, 6) NOT NULL,
+    longitude DECIMAL(10, 6) NOT NULL,
+    speed DECIMAL(6, 2),
+    direction SMALLINT,
+    collected_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (device_id) REFERENCES devices(id) ON DELETE CASCADE
+);
+```
+
+## Implementação base
+
+- Crie toda a estrutura de banco de dados;
+- Crie arquivos de Seed para que dados possam ser inseridos (é importante que tenhamos alguns dados para que seja possível demonstrar a utulização da ferramenta);
+- Crie os sistemas de migrations;
+- Crie os endpoints para realizar os CRUDs;
+
+## Implementação principal
+
+- Crie um endpoint `POST /query` que deverá receber uma mensagem do usuário.
+- Este endpoint deverá receber a mensagem enviada, e utilizando o `AI SDK` da vercel, deve-se implementar uma forma de gerar a consulta ao banco de dados (SQL) a partir da mensagem enviada;
+- Lembre-se de informar a estrutura de SQL para a ferramenta;
+- Lembre-se de criar um prompt que deixe claro que as consultas devem ser apenas de QUERY, nunca de alteração dos dados;
+
+
+# Regras
+
+- Toda a implementação deve ser feita em inglês
+- Crie logs para que seja possível monitorar as ações
+- Crie arquivos de teste do tipo `nome_recurso.http` que façam todo o teste via requests
