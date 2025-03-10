@@ -9,7 +9,7 @@ Este projeto deverá se chamar MagicQuery 🪄. Seu  objetivo é demonstrar como
 A grande idéia aqui é mostrar que com as tecnologiasm atuais, podemos delegar ao usuário a possibilidade de pensar em quais dados ele quer ver, a partir de uma mensagem em linguagem natural.
 
 # Tecnologias
-
+``
 - Express.js
 - Nodejs
 - AI SDK
