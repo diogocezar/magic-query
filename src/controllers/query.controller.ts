@@ -10,7 +10,7 @@ export class QueryController {
     this.queryService = new QueryService();
   }
 
-  async processQuery(req: Request, res: Response): Promise<void> {
+  processQuery = async (req: Request, res: Response): Promise<void> => {
     try {
       const { query } = req.body as QueryInput;
 
@@ -46,5 +46,5 @@ export class QueryController {
         message: errorMessage,
       });
     }
-  }
+  };
 }

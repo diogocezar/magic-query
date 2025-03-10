@@ -4,7 +4,7 @@ import { logger } from "../config/logger";
 import { CreateDeviceInput, UpdateDeviceInput } from "../schemas/device.schema";
 
 export class DeviceController {
-  async getAll(req: Request, res: Response): Promise<void> {
+  getAll = async (req: Request, res: Response): Promise<void> => {
     try {
       const devices = await dbAsync.all(
         `
@@ -29,9 +29,9 @@ export class DeviceController {
         message: "Failed to retrieve devices",
       });
     }
-  }
+  };
 
-  async getById(req: Request, res: Response): Promise<void> {
+  getById = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
 
@@ -67,9 +67,9 @@ export class DeviceController {
         message: "Failed to retrieve device",
       });
     }
-  }
+  };
 
-  async create(req: Request, res: Response): Promise<void> {
+  create = async (req: Request, res: Response): Promise<void> => {
     try {
       const { identifier, model, vehicle_plate, driver_id } =
         req.body as CreateDeviceInput;
@@ -98,9 +98,9 @@ export class DeviceController {
         message: "Failed to create device",
       });
     }
-  }
+  };
 
-  async update(req: Request, res: Response): Promise<void> {
+  update = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       const updateData = req.body as UpdateDeviceInput;
@@ -182,9 +182,9 @@ export class DeviceController {
         message: "Failed to update device",
       });
     }
-  }
+  };
 
-  async delete(req: Request, res: Response): Promise<void> {
+  delete = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
 
@@ -217,5 +217,5 @@ export class DeviceController {
         message: "Failed to delete device",
       });
     }
-  }
+  };
 }

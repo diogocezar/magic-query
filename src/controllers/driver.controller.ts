@@ -4,7 +4,7 @@ import { logger } from "../config/logger";
 import { CreateDriverInput, UpdateDriverInput } from "../schemas/driver.schema";
 
 export class DriverController {
-  async getAll(req: Request, res: Response): Promise<void> {
+  getAll = async (req: Request, res: Response): Promise<void> => {
     try {
       const drivers = await dbAsync.all(
         "SELECT * FROM drivers ORDER BY id",
@@ -24,9 +24,9 @@ export class DriverController {
         message: "Failed to retrieve drivers",
       });
     }
-  }
+  };
 
-  async getById(req: Request, res: Response): Promise<void> {
+  getById = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
 
@@ -57,9 +57,9 @@ export class DriverController {
         message: "Failed to retrieve driver",
       });
     }
-  }
+  };
 
-  async create(req: Request, res: Response): Promise<void> {
+  create = async (req: Request, res: Response): Promise<void> => {
     try {
       const { name } = req.body as CreateDriverInput;
 
@@ -84,9 +84,9 @@ export class DriverController {
         message: "Failed to create driver",
       });
     }
-  }
+  };
 
-  async update(req: Request, res: Response): Promise<void> {
+  update = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       const { name } = req.body as UpdateDriverInput;
@@ -126,9 +126,9 @@ export class DriverController {
         message: "Failed to update driver",
       });
     }
-  }
+  };
 
-  async delete(req: Request, res: Response): Promise<void> {
+  delete = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
 
@@ -161,5 +161,5 @@ export class DriverController {
         message: "Failed to delete driver",
       });
     }
-  }
+  };
 }
