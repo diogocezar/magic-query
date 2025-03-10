@@ -1,14 +1,14 @@
 ### Verificar saúde do servidor
-GET http://localhost:3000/health
+GET http://localhost:9000/health
 
 ### Consultar todos os motoristas
-GET http://localhost:3000/api/drivers
+GET http://localhost:9000/api/drivers
 
 ### Consultar motorista por ID
-GET http://localhost:3000/api/drivers/1
+GET http://localhost:9000/api/drivers/1
 
 ### Criar novo motorista
-POST http://localhost:3000/api/drivers
+POST http://localhost:9000/api/drivers
 Content-Type: application/json
 
 {
@@ -16,7 +16,7 @@ Content-Type: application/json
 }
 
 ### Atualizar motorista
-PUT http://localhost:3000/api/drivers/1
+PUT http://localhost:9000/api/drivers/1
 Content-Type: application/json
 
 {
@@ -24,16 +24,16 @@ Content-Type: application/json
 }
 
 ### Excluir motorista
-DELETE http://localhost:3000/api/drivers/5
+DELETE http://localhost:9000/api/drivers/5
 
 ### Consultar todos os dispositivos
-GET http://localhost:3000/api/devices
+GET http://localhost:9000/api/devices
 
 ### Consultar dispositivo por ID
-GET http://localhost:3000/api/devices/1
+GET http://localhost:9000/api/devices/1
 
 ### Criar novo dispositivo
-POST http://localhost:3000/api/devices
+POST http://localhost:9000/api/devices
 Content-Type: application/json
 
 {
@@ -44,7 +44,7 @@ Content-Type: application/json
 }
 
 ### Atualizar dispositivo
-PUT http://localhost:3000/api/devices/1
+PUT http://localhost:9000/api/devices/1
 Content-Type: application/json
 
 {
@@ -52,10 +52,10 @@ Content-Type: application/json
 }
 
 ### Excluir dispositivo
-DELETE http://localhost:3000/api/devices/6
+DELETE http://localhost:9000/api/devices/6
 
 ### Executar consulta em linguagem natural
-POST http://localhost:3000/api/query
+POST http://localhost:9000/api/query
 Content-Type: application/json
 
 {
@@ -63,7 +63,7 @@ Content-Type: application/json
 }
 
 ### Consulta mais complexa
-POST http://localhost:3000/api/query
+POST http://localhost:9000/api/query
 Content-Type: application/json
 
 {
@@ -71,7 +71,7 @@ Content-Type: application/json
 }
 
 ### Consulta de posições
-POST http://localhost:3000/api/query
+POST http://localhost:9000/api/query
 Content-Type: application/json
 
 {

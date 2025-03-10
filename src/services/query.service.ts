@@ -44,10 +44,11 @@ Sua tarefa é converter perguntas em linguagem natural para consultas SQL válid
 REGRAS IMPORTANTES:
 1. Gere APENAS consultas SELECT. Nunca gere INSERT, UPDATE, DELETE ou qualquer outra operação que modifique dados.
 2. Não use funções ou sintaxes específicas que não sejam suportadas pelo SQLite.
-3. Retorne apenas a consulta SQL, sem explicações adicionais.
-4. Sempre verifique se as tabelas e colunas referenciadas existem no schema fornecido.
-5. Use aliases para tornar a consulta mais legível quando necessário.
-6. Inclua comentários SQL para explicar partes complexas da consulta.
+3. Retorne APENAS a consulta SQL, sem explicações adicionais, sem comentários e sem formatação markdown.
+4. Não inclua texto como "Aqui está a consulta SQL:" ou qualquer outro texto introdutório.
+5. Não inclua seu processo de pensamento ou raciocínio.
+6. Sempre verifique se as tabelas e colunas referenciadas existem no schema fornecido.
+7. Use aliases para tornar a consulta mais legível quando necessário.
 
 Aqui está o schema do banco de dados:
 ${DB_SCHEMA}
@@ -57,11 +58,13 @@ export class QueryService {
   private ollama;
 
   constructor() {
-    // Extrair apenas o host e porta da URL
-    const baseURL = env.OLLAMA_API_URL.replace("/api/generate", "");
+    // Usar a URL diretamente do arquivo .env
+    const baseURL = env.OLLAMA_API_URL;
+
+    logger.info({ baseURL }, "Initializing Ollama client with baseURL");
 
     this.ollama = createOllama({
-      baseURL: baseURL + "/api",
+      baseURL: baseURL,
     });
   }
 
@@ -69,14 +72,43 @@ export class QueryService {
     try {
       logger.info({ userQuery }, "Generating SQL query from natural language");
 
+      // Usar um modelo que sabemos que existe no Ollama
+      const modelName = "llama2"; // Ou outro modelo que você tenha instalado
+
+      logger.info({ model: modelName }, "Using model for query generation");
+
       const { text } = await generateText({
-        model: this.ollama("llama3"),
+        model: this.ollama(modelName),
         system: SYSTEM_PROMPT,
         prompt: userQuery,
         temperature: 0.1, // Baixa temperatura para respostas mais determinísticas
       });
 
-      const sqlQuery = text.trim();
+      // Extrair apenas a consulta SQL da resposta
+      let sqlQuery = text.trim();
+
+      // Remover blocos de código markdown se presentes
+      sqlQuery = sqlQuery.replace(/```sql\n/g, "").replace(/```/g, "");
+
+      // Remover qualquer texto antes de SELECT
+      const selectIndex = sqlQuery.toLowerCase().indexOf("select");
+      if (selectIndex >= 0) {
+        sqlQuery = sqlQuery.substring(selectIndex);
+      }
+
+      // Remover qualquer texto após o ponto e vírgula final
+      const lastSemicolonIndex = sqlQuery.lastIndexOf(";");
+      if (lastSemicolonIndex >= 0) {
+        sqlQuery = sqlQuery.substring(0, lastSemicolonIndex + 1);
+      }
+
+      // Remover comentários SQL
+      sqlQuery = sqlQuery.replace(/--.*$/gm, "").trim();
+
+      logger.info(
+        { originalResponse: text, extractedQuery: sqlQuery },
+        "Extracted SQL query from model response"
+      );
 
       // Verificar se a consulta contém apenas SELECT
       if (!this.isSelectQuery(sqlQuery)) {
@@ -127,15 +159,41 @@ export class QueryService {
   }
 
   private isSelectQuery(query: string): boolean {
+    // Verificar se a consulta está vazia
+    if (!query || query.trim() === "") {
+      return false;
+    }
+
+    // Normalizar a consulta para facilitar a verificação
     const normalizedQuery = query.trim().toLowerCase();
-    return (
-      normalizedQuery.startsWith("select") &&
-      !normalizedQuery.includes("insert") &&
-      !normalizedQuery.includes("update") &&
-      !normalizedQuery.includes("delete") &&
-      !normalizedQuery.includes("drop") &&
-      !normalizedQuery.includes("alter") &&
-      !normalizedQuery.includes("create")
-    );
+
+    // Verificar se a consulta começa com SELECT
+    if (!normalizedQuery.startsWith("select")) {
+      return false;
+    }
+
+    // Lista de palavras-chave proibidas que podem modificar dados
+    const forbiddenKeywords = [
+      "insert into",
+      "update ",
+      "delete from",
+      "drop table",
+      "drop database",
+      "truncate table",
+      "alter table",
+      "create table",
+      "create database",
+    ];
+
+    // Verificar se a consulta contém alguma das palavras-chave proibidas
+    // Usamos espaço após algumas palavras-chave para evitar falsos positivos
+    for (const keyword of forbiddenKeywords) {
+      if (normalizedQuery.includes(keyword)) {
+        return false;
+      }
+    }
+
+    // Se passou por todas as verificações, é uma consulta SELECT válida
+    return true;
   }
 }
