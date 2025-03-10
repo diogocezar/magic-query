@@ -75,5 +75,5 @@ POST http://localhost:9000/api/query
 Content-Type: application/json
 
 {
-  "query": "Quais são as últimas 10 posições registradas para o dispositivo com ID 1?"
+  "query": "Últimas 10 posições registradas para o dispositivo do motorista João Silva"
 } 

@@ -1,37 +1,50 @@
-# MagicQuery 🪄
+# Magic Query
 
-Sistema de geração de consultas SQL a partir de linguagem natural usando IA.
+Um serviço de API que utiliza modelos de IA para converter perguntas em linguagem natural em consultas SQL válidas.
 
-## 📋 Descrição
+## Funcionalidades
 
-MagicQuery é uma API que permite converter perguntas em linguagem natural para consultas SQL válidas, executá-las e retornar os resultados. O sistema utiliza o Ollama para processar a linguagem natural e gerar as consultas SQL.
+- Conversão de linguagem natural para consultas SQL
+- Execução segura de consultas SQL (apenas SELECT)
+- Validação de entrada com Zod
+- Logs detalhados para monitoramento
 
-## 🔧 Tecnologias
+## Tecnologias
 
-- **Backend**: Node.js, Express, TypeScript
-- **Banco de Dados**: SQLite
-- **IA**: Ollama (via AI SDK da Vercel)
-- **Validação**: Zod
-- **Logs**: Pino
-- **Gerenciador de Pacotes**: PNPM
+- TypeScript
+- Node.js
+- Express
+- SQLite
+- Ollama (para modelos de IA locais)
+- Zod (validação)
+- Pino (logging)
 
-## 🗂️ Estrutura do Banco de Dados
+## Estrutura do Projeto
 
-O sistema utiliza um banco de dados SQLite com as seguintes tabelas:
+```
+magic-query/
+├── src/
+│   ├── config/         # Configurações do aplicativo
+│   ├── controllers/    # Controladores da API
+│   ├── database/       # Conexão e migrações do banco de dados
+│   ├── middlewares/    # Middlewares Express
+│   ├── routes/         # Rotas da API
+│   ├── schemas/        # Schemas de validação Zod
+│   ├── services/       # Lógica de negócios
+│   ├── types/          # Definições de tipos TypeScript
+│   ├── utils/          # Funções utilitárias
+│   └── server.ts       # Ponto de entrada do aplicativo
+├── test/               # Arquivos de teste HTTP
+└── package.json        # Dependências e scripts
+```
 
-- **drivers**: Armazena informações sobre motoristas
-- **devices**: Armazena informações sobre dispositivos de rastreamento
-- **positions**: Armazena as posições geográficas dos dispositivos
-
-## 🚀 Instalação
-
-### Pré-requisitos
+## Pré-requisitos
 
 - Node.js 18+
 - PNPM
-- Ollama instalado e rodando localmente
+- Ollama instalado e configurado
 
-### Passos para instalação
+## Instalação
 
 1. Clone o repositório:
    ```bash
@@ -48,65 +61,53 @@ O sistema utiliza um banco de dados SQLite com as seguintes tabelas:
    ```bash
    cp .env.example .env
    ```
-   Edite o arquivo `.env` conforme necessário.
+   Edite o arquivo `.env` com suas configurações.
 
-4. Execute as migrações do banco de dados:
-   ```bash
-   pnpm migrate
-   ```
-
-5. Popule o banco de dados com dados de exemplo:
-   ```bash
-   pnpm seed
-   ```
-
-6. Inicie o servidor:
+4. Inicie o servidor de desenvolvimento:
    ```bash
    pnpm dev
    ```
 
-## 📚 Uso da API
+## Uso da API
 
-### Endpoints
+### Gerar uma consulta SQL a partir de linguagem natural
 
-#### Consulta em Linguagem Natural
-- **POST /api/query**
-  - Corpo: `{ "query": "Quais são os 5 motoristas cadastrados no sistema?" }`
-  - Resposta: Consulta SQL gerada e resultados da execução
+```http
+POST /api/query/generate
+Content-Type: application/json
 
-#### Motoristas (CRUD)
-- **GET /api/drivers** - Listar todos os motoristas
-- **GET /api/drivers/:id** - Obter motorista por ID
-- **POST /api/drivers** - Criar novo motorista
-- **PUT /api/drivers/:id** - Atualizar motorista
-- **DELETE /api/drivers/:id** - Excluir motorista
-
-#### Dispositivos (CRUD)
-- **GET /api/devices** - Listar todos os dispositivos
-- **GET /api/devices/:id** - Obter dispositivo por ID
-- **POST /api/devices** - Criar novo dispositivo
-- **PUT /api/devices/:id** - Atualizar dispositivo
-- **DELETE /api/devices/:id** - Excluir dispositivo
-
-### Exemplos de Consultas
-
-Você pode encontrar exemplos de requisições no arquivo `test/api.http`.
-
-## 🧪 Testes
-
-Para testar a API, você pode usar o arquivo de testes HTTP:
-
-```bash
-# Se você estiver usando o VS Code com a extensão REST Client
-# Abra o arquivo test/api.http e clique em "Send Request"
-
-# Ou use curl, Postman ou outra ferramenta de sua preferência
+{
+  "query": "Quais são os 5 dispositivos mais recentes?"
+}
 ```
 
-## 📝 Licença
+### Executar uma consulta SQL
 
-Este projeto está licenciado sob a licença ISC.
+```http
+POST /api/query/execute
+Content-Type: application/json
 
-## 🤝 Contribuição
+{
+  "sql": "SELECT * FROM devices ORDER BY created_at DESC LIMIT 5"
+}
+```
 
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.
+## Segurança
+
+- Apenas consultas SELECT são permitidas
+- Validação rigorosa de entrada
+- Verificação de palavras-chave proibidas
+
+## Testes
+
+Execute os testes HTTP usando uma ferramenta como o REST Client para VS Code ou Insomnia:
+
+```bash
+# Os arquivos de teste estão em:
+test/api.http
+test/sql-cleaner.http
+```
+
+## Licença
+
+MIT
