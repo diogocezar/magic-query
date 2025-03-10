@@ -1,0 +1,35 @@
+{
+  "name": "magic-query",
+  "version": "1.0.0",
+  "description": "AI-Powered SQL Queries from Natural Language",
+  "main": "dist/server.js",
+  "scripts": {
+    "start": "node dist/server.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "build": "tsc --skipLibCheck || true",
+    "migrate": "npx ts-node src/database/migrations/run.ts",
+    "seed": "npx ts-node src/database/seeds/run.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ai": "^4.1.54",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "ollama-ai-provider": "^1.2.0",
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0",
+    "sqlite3": "^5.1.7",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.10",
+    "@types/sqlite3": "^5.1.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.2"
+  }
+}

@@ -1,0 +1,79 @@
+### Verificar saúde do servidor
+GET http://localhost:3000/health
+
+### Consultar todos os motoristas
+GET http://localhost:3000/api/drivers
+
+### Consultar motorista por ID
+GET http://localhost:3000/api/drivers/1
+
+### Criar novo motorista
+POST http://localhost:3000/api/drivers
+Content-Type: application/json
+
+{
+  "name": "Novo Motorista"
+}
+
+### Atualizar motorista
+PUT http://localhost:3000/api/drivers/1
+Content-Type: application/json
+
+{
+  "name": "Motorista Atualizado"
+}
+
+### Excluir motorista
+DELETE http://localhost:3000/api/drivers/5
+
+### Consultar todos os dispositivos
+GET http://localhost:3000/api/devices
+
+### Consultar dispositivo por ID
+GET http://localhost:3000/api/devices/1
+
+### Criar novo dispositivo
+POST http://localhost:3000/api/devices
+Content-Type: application/json
+
+{
+  "identifier": "DEV007",
+  "model": "Tracker X4",
+  "vehicle_plate": "XYZ1234",
+  "driver_id": 1
+}
+
+### Atualizar dispositivo
+PUT http://localhost:3000/api/devices/1
+Content-Type: application/json
+
+{
+  "model": "Tracker X5 Pro"
+}
+
+### Excluir dispositivo
+DELETE http://localhost:3000/api/devices/6
+
+### Executar consulta em linguagem natural
+POST http://localhost:3000/api/query
+Content-Type: application/json
+
+{
+  "query": "Quais são os 5 motoristas cadastrados no sistema?"
+}
+
+### Consulta mais complexa
+POST http://localhost:3000/api/query
+Content-Type: application/json
+
+{
+  "query": "Mostre os dispositivos e seus respectivos motoristas"
+}
+
+### Consulta de posições
+POST http://localhost:3000/api/query
+Content-Type: application/json
+
+{
+  "query": "Quais são as últimas 10 posições registradas para o dispositivo com ID 1?"
+} 
