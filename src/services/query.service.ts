@@ -24,7 +24,7 @@ export class QueryService {
   async generateSqlQuery(userQuery: string): Promise<string> {
     try {
       logger.info({ userQuery }, "Generating SQL query from natural language");
-      const modelName = "llama2"; // Ou outro modelo que você tenha instalado
+      const modelName = "deepseek-r1:8b"; // Ou outro modelo que você tenha instalado
 
       logger.info({ model: modelName }, "Using model for query generation");
 
@@ -61,13 +61,6 @@ export class QueryService {
       throw error;
     }
   }
-
-  /**
-   * Executa uma consulta SQL no banco de dados
-   * @param sqlQuery Consulta SQL a ser executada
-   * @returns Resultado da consulta
-   * @throws Error se a consulta não for do tipo SELECT ou se ocorrer um erro na execução
-   */
   async executeQuery(sqlQuery: string): Promise<QueryResult> {
     try {
       logger.info({ sqlQuery }, "Executing SQL query");

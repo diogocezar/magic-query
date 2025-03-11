@@ -100,12 +100,10 @@ Content-Type: application/json
 
 ## Testes
 
-Execute os testes HTTP usando uma ferramenta como o REST Client para VS Code ou Insomnia:
+Execute os testes HTTP usando uma ferramenta como o REST Client para VS Code:
 
 ```bash
-# Os arquivos de teste estão em:
 test/api.http
-test/sql-cleaner.http
 ```
 
 ## Licença
